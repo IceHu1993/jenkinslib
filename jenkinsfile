@@ -1,0 +1,75 @@
+#!groovy
+
+@Library('jenkinslib') _
+
+def tools = new org.devops.tools()
+
+String workspace = "/opt/jenkins/workspace"
+
+//pipeline
+pipeline{
+    agent{
+        node {
+            label "master"
+            customWorkspace "${workspace}"
+        }
+    }
+    options{
+        timestamps()
+        skipDefaultCheckout()
+        disableConcurrentBuilds()
+        timeout(time: 1, unit:'HOURS')
+    }
+    stages {
+        stage("GetCode"){
+            steps{
+                timeout(time:5,unit:"MINUTES"){
+                    script{
+                            println('getcode')
+                    }
+                }
+            }
+        }
+        stage("Build"){
+            steps{
+                timeout(time:20,unit:"MINUTES"){
+                    script{
+                        println('Packet application')
+                    }
+                }
+            }
+        }
+        stage("CodeScan"){
+            steps{
+                timeout(time:30,unit:"MINUTES"){
+                    script{
+                        print("Code Scan")
+                        tools.PrintMes('this is my lib!')
+                    }
+                }
+            }
+        }
+    }
+    post{
+        always{
+            script{
+                println("always")
+            }
+        }
+        success{
+            script{
+                currentBuild.description += "\n Bulid Succeded!"
+            }
+        }
+        failure{
+            script{
+                currentBuild.description += "\n Build Fail"
+            }
+        }
+        aborted{
+            script{
+                currentBuild.description +="\n Build Cancelled"
+            }
+        }
+    }
+}
