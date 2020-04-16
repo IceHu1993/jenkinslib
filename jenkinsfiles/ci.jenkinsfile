@@ -45,18 +45,7 @@ pipeline{
                     artifactory.main(buildType,buildShell)
                     artifactory.PushArtifact()
                     
-                    //上传制品
-                    //nexus.main("nexus")
-                    
-                    //发布制品
-                    //sh " wget ${artifactUrl} && ls "
-                    
-                    
-                    
-
-
-                    //deploy.SaltDeploy("${deployHosts}","test.ping")
-                    //deploy.AnsibleDeploy("${deployHosts}","-m ping ")
+                   
                 }
             }
         }
